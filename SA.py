@@ -90,32 +90,36 @@ def print_results():
     print("\n--------------- ITERATIONS =", test_iterations, "------------------------------------------------\n")
 
     max = 0
+    plt.figure(1)
     for k, v in initial_temperature_p.items():
         if v > max:
             max = v
             key = k
-    print("initial_temperature", key, max)
+    print("initial_temperature =", key, "num of absolute maximums =", max)
     print("\t", max / test_iterations * 100, "%")
+
     max = 0
     for k, v in initial_x_p.items():
         if v > max:
             max = v
             key = k
-    print("initial_x", key, max)
+    print("initial_x =", key, "num of absolute maximums =", max)
     print("\t", max / test_iterations * 100, "%")
+
     max = 0
     for k, v in neigh_p.items():
         if v > max:
             max = v
             key = k
-    print("neigh", key, max)
+    print("neigh =", key, "num of absolute maximums =", max)
     print("\t", max / test_iterations * 100, "%")
+
     max = 0
     for k, v in var_p.items():
         if v > max:
             max = v
             key = k
-    print("var", key, max)
+    print("var =", key, "num of absolute maximums =", max)
     print("\t", max / test_iterations * 100, "%")
 
 
@@ -130,8 +134,8 @@ var_p = dict()
 neigh_p = dict()
 initial_x_p = dict()
 
-test_iterations = 0
 for times in [1, 2, 3]:
+    test_iterations = 0
     for initial_temperature in range(100, 1000, 100):
         if not initial_temperature_p.get(initial_temperature):
             initial_temperature_p[initial_temperature] = 0
@@ -141,12 +145,12 @@ for times in [1, 2, 3]:
             for neigh in np.arange(0.0, 1.0, 0.1):
                 if not neigh_p.get(neigh):
                     neigh_p[neigh] = 0.0
-                for initial_x in np.arange(0, 40, 0.5):
+                for initial_x in np.arange(0, 40, 1):
                     if not initial_x_p.get(initial_x):
                         initial_x_p[initial_x] = 0
                     it = simulated_annealing(init_x=initial_x, neighborhood=neigh, init_temp=initial_temperature,
                                              temp_variation=var,
-                                             iterations=100,
+                                             iterations=1000,
                                              graphs=0)
                     if it:
                         initial_temperature_p[initial_temperature] += 1
