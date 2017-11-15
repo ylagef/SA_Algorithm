@@ -67,7 +67,6 @@ def simulated_annealing(init_x, neighborhood, init_temp, temp_variation, iterati
             x_value = new_x
             steps[step_iteration] = x_value
             step_iteration = step_iteration + 1
-
         temp = temp * temp_variation
         temp_graph.append(temp)
 
@@ -80,7 +79,9 @@ def simulated_annealing(init_x, neighborhood, init_temp, temp_variation, iterati
             iteration = k
 
     # Print the results and used parameters
-    print("\nFINAL RESULT:\nMaximum value", f(maximum), "at x =", maximum, "- Iteration", iteration, "/",
+    print("\nFINAL RESULT:\n\tMaximum value", f(maximum), "at x =", maximum, "- Iteration", iteration, "/",
+          (iterations - 1))
+    print("\tLast value", f(x_value), "at x =", x_value, "- Iteration", iterations - 1, "/",
           (iterations - 1))
     print("Parameters:\n\tInitial x value =", init_x, "\n\tAlpha (neighborhood) =", neighborhood,
           "\n\tStart temperature =", init_temp, "\n\tBeta (Temp variation) =", temp_variation, "\n\tIterations =",
@@ -90,10 +91,15 @@ def simulated_annealing(init_x, neighborhood, init_temp, temp_variation, iterati
         print_graphs()
 
 
-init_x = 0  # Initial X value
-neighborhood = 0.5  # Alpha
-init_temp = 100  # Start temperature
-temp_variation = 0.99  # Beta
-iterations = 10000  # Number of iterations
+# init_x - Initial X value
+# neighborhood - Alpha
+# init_temp - Start temperature
+# temp_variation - Beta
+# iterations - Number of iterations
+# graphs - Display graph or not 1,0
 
-simulated_annealing(init_x, neighborhood, init_temp, temp_variation, iterations, 0)
+for t in [10, 100, 1000]:
+    for v in np.arange(0, 1.1, 0.1):
+        for n in np.arange(0, 1.1, 0.1):
+            for x in np.arange(0, 40.5, 0.5):
+                simulated_annealing(init_x=x, neighborhood=n, init_temp=t, temp_variation=v, iterations=100, graphs=0)
