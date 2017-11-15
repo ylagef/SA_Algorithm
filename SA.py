@@ -94,6 +94,6 @@ init_x = 0  # Initial X value
 neighborhood = 0.5  # Alpha
 init_temp = 100  # Start temperature
 temp_variation = 0.99  # Beta
-iterations = 1000  # Number of iterations
+iterations = 10000  # Number of iterations
 
 simulated_annealing(init_x, neighborhood, init_temp, temp_variation, iterations, 0)
