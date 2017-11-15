@@ -72,23 +72,51 @@ def simulated_annealing(init_x, neighborhood, init_temp, temp_variation, iterati
 
     # Calculates final max and its iteration
     maximum = 0
-    iteration = 0
     for k, v in steps.items():
         if f(v) > f(maximum):
             maximum = v
-            iteration = k
-
-    # Print the results and used parameters
-    print("\nFINAL RESULT:\n\tMaximum value", f(maximum), "at x =", maximum, "- Iteration", iteration, "/",
-          (iterations - 1))
-    print("\tLast value", f(x_value), "at x =", x_value, "- Iteration", iterations - 1, "/",
-          (iterations - 1))
-    print("Parameters:\n\tInitial x value =", init_x, "\n\tAlpha (neighborhood) =", neighborhood,
-          "\n\tStart temperature =", init_temp, "\n\tBeta (Temp variation) =", temp_variation, "\n\tIterations =",
-          iterations)
 
     if graphs:
         print_graphs()
+
+    absolute = 0
+    if f(maximum) > 1.81:
+        absolute = 1
+
+    return absolute
+
+
+def print_results():
+    print("\n--------------- ITERATIONS =", test_iterations, "------------------------------------------------\n")
+
+    max = 0
+    for k, v in initial_temperature_p.items():
+        if v > max:
+            max = v
+            key = k
+    print("initial_temperature", key, max)
+    print("\t", max / test_iterations * 100, "%")
+    max = 0
+    for k, v in initial_x_p.items():
+        if v > max:
+            max = v
+            key = k
+    print("initial_x", key, max)
+    print("\t", max / test_iterations * 100, "%")
+    max = 0
+    for k, v in neigh_p.items():
+        if v > max:
+            max = v
+            key = k
+    print("neigh", key, max)
+    print("\t", max / test_iterations * 100, "%")
+    max = 0
+    for k, v in var_p.items():
+        if v > max:
+            max = v
+            key = k
+    print("var", key, max)
+    print("\t", max / test_iterations * 100, "%")
 
 
 # init_x - Initial X value
@@ -97,9 +125,33 @@ def simulated_annealing(init_x, neighborhood, init_temp, temp_variation, iterati
 # temp_variation - Beta
 # iterations - Number of iterations
 # graphs - Display graph or not 1,0
+initial_temperature_p = dict()
+var_p = dict()
+neigh_p = dict()
+initial_x_p = dict()
 
-for t in [10, 100, 1000]:
-    for v in np.arange(0, 1.1, 0.1):
-        for n in np.arange(0, 1.1, 0.1):
-            for x in np.arange(0, 40.5, 0.5):
-                simulated_annealing(init_x=x, neighborhood=n, init_temp=t, temp_variation=v, iterations=100, graphs=0)
+test_iterations = 0
+for times in [1, 2, 3]:
+    for initial_temperature in range(100, 1000, 100):
+        if not initial_temperature_p.get(initial_temperature):
+            initial_temperature_p[initial_temperature] = 0
+        for var in np.arange(0.9, 1.0, 0.01):
+            if not var_p.get(var):
+                var_p[var] = 0
+            for neigh in np.arange(0.0, 1.0, 0.1):
+                if not neigh_p.get(neigh):
+                    neigh_p[neigh] = 0.0
+                for initial_x in np.arange(0, 40, 0.5):
+                    if not initial_x_p.get(initial_x):
+                        initial_x_p[initial_x] = 0
+                    it = simulated_annealing(init_x=initial_x, neighborhood=neigh, init_temp=initial_temperature,
+                                             temp_variation=var,
+                                             iterations=100,
+                                             graphs=0)
+                    if it:
+                        initial_temperature_p[initial_temperature] += 1
+                        var_p[var] += 1
+                        neigh_p[neigh] += 1
+                        initial_x_p[initial_x] += 1
+                    test_iterations += 1
+    print_results()
