@@ -89,38 +89,22 @@ def simulated_annealing(init_x, neighborhood, init_temp, temp_variation, iterati
 def print_results():
     print("\n--------------- ITERATIONS =", test_iterations, "------------------------------------------------\n")
 
-    max = 0
-    plt.figure(1)
-    for k, v in initial_temperature_p.items():
-        if v > max:
-            max = v
-            key = k
-    print("initial_temperature =", key, "num of absolute maximums =", max)
-    print("\t", max / test_iterations * 100, "%")
+    def results(item, string):
+        maximums = 0
+        key = 0
 
-    max = 0
-    for k, v in initial_x_p.items():
-        if v > max:
-            max = v
-            key = k
-    print("initial_x =", key, "num of absolute maximums =", max)
-    print("\t", max / test_iterations * 100, "%")
+        plt.figure(1)
+        for k, v in item.items():
+            if v > maximums:
+                maximums = v
+                key = k
+        print(string, "=", key, "num of absolute maximums =", maximums)
+        print("\t", maximums / test_iterations * 100, "%")
 
-    max = 0
-    for k, v in neigh_p.items():
-        if v > max:
-            max = v
-            key = k
-    print("neigh =", key, "num of absolute maximums =", max)
-    print("\t", max / test_iterations * 100, "%")
-
-    max = 0
-    for k, v in var_p.items():
-        if v > max:
-            max = v
-            key = k
-    print("var =", key, "num of absolute maximums =", max)
-    print("\t", max / test_iterations * 100, "%")
+    results(initial_temperature_p, "Initial temperature")
+    results(initial_x_p, "Initial x")
+    results(neigh_p, "Neighbor")
+    results(var_p, "Variation")
 
 
 # init_x - Initial X value
